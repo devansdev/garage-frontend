@@ -1,25 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import { Button, Drawer, Layout } from "antd";
+import DeviceList from "./comonents/Devices";
+import DeviceForm from "./comonents/DeviceForm";
+
+const { Content } = Layout;
 
 function App() {
+  const [drawerVisible, setDrawerVisibility] = useState(false);
+  const [listpdated, setListUpdated] = useState(false);
+  const onClose = () => {
+    setDrawerVisibility(false);
+    setListUpdated(true);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <Layout className="layout">
+      <Content style={{ padding: "0 50px" }}>
+        <div className="site-layout-content">
+          {<Button className="add-device-button" type="primary" onClick={
+            () => {
+              setDrawerVisibility(true);
+            }
+          }>
+            Add Device
+          </Button>}
+          <DeviceList listpdated={listpdated}  />
+        </div>
+        <Drawer
+          title="Add Device Form"
+          placement="right"
+          closable={true}
+          onClose={onClose}
+          visible={drawerVisible}
+          width={window.innerWidth/4}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <DeviceForm close={onClose}/>
+        </Drawer>
+      </Content>
+    </Layout>
   );
 }
 
